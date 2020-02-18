@@ -10,6 +10,8 @@ router.post('/generate', auth, async (req, res) => {
 
         const baseUrl = config.get('baseUrl');
         const {from} = req.body;
+        console.log(from);
+        
 
         const code = shortId.generate();
 
@@ -24,7 +26,7 @@ router.post('/generate', auth, async (req, res) => {
         const link = new Link({
             code, to, from, owner: req.user.userId
         });
-        console.log(link)
+
         await link.save();
 
         res.status(201).json({link});
@@ -36,6 +38,7 @@ router.post('/generate', auth, async (req, res) => {
 
 router.get('/', auth, async (req, res) => {
     try {
+        
         const links = await Link.find({owner:req.user.userId});
         res.json(links);
     } catch (e) {
